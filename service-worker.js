@@ -4,6 +4,7 @@ self.addEventListener('install', event => {
       return cache.addAll([
         './',
         './index.html',
+'./player.html',
         // Добавь сюда важные ресурсы, например, CSS, логотипы и т.д.
       ]);
     })
