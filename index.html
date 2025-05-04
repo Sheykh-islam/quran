@@ -36,4 +36,14 @@ id="cardtitle3_1002001401"
 onclick="window.location.href='https://sheykh-islam.github.io/namaz/quran.html'; return false;"
 >
 Плеер Коран
-</a> </div> </body> </html>
+</a> </div> <script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./service-worker.js')
+    .then(function(reg) {
+      console.log('Service Worker зарегистрирован', reg);
+    })
+    .catch(function(err) {
+      console.log('Service Worker ошибка:', err);
+    });
+}
+</script> </body> </html>
