@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon-192.png">
+    <meta charset="UTF-8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="theme-color" content="#ececec">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список сур</title>
+    <style>
+        body {
+            background: #ececec;
+            font-family: Arial, Verdana, Tahoma, sans-serif;
+            padding: 15px;
+            margin: 0;
+        }
+        .sura-table {
+            width: 100%;
+            max-width: 100%;
+            margin: 1px auto;
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.11);
+            padding: 15px !important;
+            box-sizing: border-box;
+        }
+        .sura-row {
+            display: flex;
+            align-items: flex-start;
+            border-bottom: 1px solid #efefef;
+            padding: 14px 0;
+            font-size: 18px;
+            transition: background 0.15s;
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+        }
+        .sura-row:last-child { 
+            border-bottom: none;
+        }
+        .sura-num {
+            font-weight: bold;
+            color: #369e6f;
+            width: 32px;
+            text-align: center;
+            font-size: 20px;
+            margin-top: 2px;
+        }
+        .sura-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            margin-left: 10px;
+        }
+        .sura-head {
+            max-width: 500px;
+            margin: 16px auto 18px;
+            text-align: center;
+        }
+        .sura-title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #218365;
+            margin-bottom: 9px;
+        }
+        .sura-ayat {
+            font-size: 1.02rem;
+            color: #50575c;
+            font-style: italic;
+            opacity: 0.92;
+            letter-spacing: 0.03em;
+            line-height: 1.4;
+        }
+        .sura-name {
+            font-weight: bold;
+            font-size: 21px;
+            letter-spacing: 0.5px;
+            margin-bottom: 0;
+        }
+        .sura-ru {
+            color: #888;
+            font-size: 15px;
+            margin-top: 2px;
+        }
+        .sura-ar {
+            font-size: 23px;
+            font-family: 'Amiri', 'Scheherazade', serif;
+            color: #095710;
+            direction: rtl;
+            text-align: right;
+            line-height: 1;
+            min-width: 95px;
+            align-self: flex-end;
+        }
+        .sura-row:hover {
+            background: #e7fff2;
+            box-shadow: 0 2px 8px rgba(54, 158, 111, 0.07);
+        }
+
+        @media (max-width: 480px) {
+            .sura-ar {
+                font-size: 18px;
+                min-width: 70px;
+            }
+            .sura-name {
+                font-size: 18px;
+            }
+            .sura-num {
+                font-size: 16px;
+                width: 25px;
+            }
+            .sura-row {
+                padding: 10px 0;
+                font-size: 16px;
+            }
+            .sura-title {
+                font-size: 1.5rem;
+                margin-bottom: 5px;
+            }
+            .sura-ayat {
+                font-size: 0.9rem;
+                padding: 0 10px;
+            }
+            .sura-ru {
+                font-size: 13px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri&display=swap">
+</head>
+<body>
+<div style="background: #166c43; border-radius: 0 0 22px 22px; padding: 0; margin-bottom:14px;">
+  <div style="display: flex; align-items: center; max-width:610px;margin:0 auto;">
+    <!-- Кнопка назад слева -->
+    <button onclick="goBack()" style="background:none;border:none;color:#fff;font-weight:bold;font-size:1.1em;cursor:pointer;padding:8px 16px;margin-left:0;">
+      &larr; Назад
+    </button>
+    <span style="color:#fff;font-size:1.34em;font-weight:900;letter-spacing:0.04em;margin-left:18px;margin-top:2px;">
+      <!-- Можно вставить заголовок -->
+    </span>
+  </div>
+</div>
+<div class="sura-head">
+    <div class="sura-title">Мусхаф</div>
+    <div class="sura-ayat">Читай во имя твоего Господа, Который сотворил все сущее (96:1)</div>
+</div>
+    <div class="sura-table">
+<div class="sura-row" onclick="goToSura(1)">
+    <div class="sura-num">1</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Фатиха</span>
+        <span class="sura-ru">Открывающая</span>
+    </div>
+    <div class="sura-ar">الفاتحة</div>
+</div>
+<div class="sura-row" onclick="goToSura(2)">
+    <div class="sura-num">2</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Бакара</span>
+        <span class="sura-ru">Корова</span>
+    </div>
+    <div class="sura-ar">البقرة</div>
+</div>
+<div class="sura-row" onclick="goToSura(3)">
+    <div class="sura-num">3</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль Имран</span>
+        <span class="sura-ru">Семейство Имрана</span>
+    </div>
+    <div class="sura-ar">آل عمران</div>
+</div>
+<div class="sura-row" onclick="goToSura(4)">
+    <div class="sura-num">4</div>
+    <div class="sura-info">
+        <span class="sura-name">Ан-Ниса</span>
+        <span class="sura-ru">Женщины</span>
+    </div>
+    <div class="sura-ar">النساء</div>
+</div>
+<div class="sura-row" onclick="goToSura(5)">
+    <div class="sura-num">5</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Маида</span>
+        <span class="sura-ru">Трапеза</span>
+    </div>
+    <div class="sura-ar">المائدة</div>
+</div>
+<div class="sura-row" onclick="goToSura(6)">
+    <div class="sura-num">6</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Анам</span>
+        <span class="sura-ru">Скот</span>
+    </div>
+    <div class="sura-ar">الأنعام</div>
+</div>
+<div class="sura-row" onclick="goToSura(7)">
+    <div class="sura-num">7</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Араф</span>
+        <span class="sura-ru">Ограды</span>
+    </div>
+    <div class="sura-ar">الأعراف</div>
+</div>
+<div class="sura-row" onclick="goToSura(8)">
+    <div class="sura-num">8</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Анфаль</span>
+        <span class="sura-ru">Трофеи</span>
+    </div>
+    <div class="sura-ar">الأنفال</div>
+</div>
+<div class="sura-row" onclick="goToSura(9)">
+    <div class="sura-num">9</div>
+    <div class="sura-info">
+        <span class="sura-name">Ат-Тауба</span>
+        <span class="sura-ru">Покаяние</span>
+    </div>
+    <div class="sura-ar">التوبة</div>
+</div>
+<div class="sura-row" onclick="goToSura(10)">
+    <div class="sura-num">10</div>
+    <div class="sura-info">
+        <span class="sura-name">Юнус</span>
+        <span class="sura-ru">Юнус</span>
+    </div>
+    <div class="sura-ar">يونس</div>
+</div>
+<div class="sura-row" onclick="goToSura(11)">
+    <div class="sura-num">11</div>
+    <div class="sura-info">
+        <span class="sura-name">Худ</span>
+        <span class="sura-ru">Худ</span>
+    </div>
+    <div class="sura-ar">هود</div>
+</div>
+<div class="sura-row" onclick="goToSura(12)">
+    <div class="sura-num">12</div>
+    <div class="sura-info">
+        <span class="sura-name">Юсуф</span>
+        <span class="sura-ru">Юсуф</span>
+    </div>
+    <div class="sura-ar">يوسف</div>
+</div>
+<div class="sura-row" onclick="goToSura(13)">
+    <div class="sura-num">13</div>
+    <div class="sura-info">
+        <span class="sura-name">Ар-Ра‘д</span>
+        <span class="sura-ru">Гром</span>
+    </div>
+    <div class="sura-ar">الرعد</div>
+</div>
+<div class="sura-row" onclick="goToSura(14)">
+    <div class="sura-num">14</div>
+    <div class="sura-info">
+        <span class="sura-name">Ибрахим</span>
+        <span class="sura-ru">Ибрахим</span>
+    </div>
+    <div class="sura-ar">ابراهيم</div>
+</div>
+<div class="sura-row" onclick="goToSura(15)">
+    <div class="sura-num">15</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Хиджр</span>
+        <span class="sura-ru">Аль-Хиджр</span>
+    </div>
+    <div class="sura-ar">الحجر</div>
+</div>
+<div class="sura-row" onclick="goToSura(16)">
+    <div class="sura-num">16</div>
+    <div class="sura-info">
+        <span class="sura-name">Ан-Нахль</span>
+        <span class="sura-ru">Пчёлы</span>
+    </div>
+    <div class="sura-ar">النحل</div>
+</div>
+<div class="sura-row" onclick="goToSura(17)">
+    <div class="sura-num">17</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Исра</span>
+        <span class="sura-ru">Ночной перенос</span>
+    </div>
+    <div class="sura-ar">الإسراء</div>
+</div>
+<div class="sura-row" onclick="goToSura(18)">
+    <div class="sura-num">18</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Кахф</span>
+        <span class="sura-ru">Пещера</span>
+    </div>
+    <div class="sura-ar">الكهف</div>
+</div>
+<div class="sura-row" onclick="goToSura(19)">
+    <div class="sura-num">19</div>
+    <div class="sura-info">
+        <span class="sura-name">Марьям</span>
+        <span class="sura-ru">Мария</span>
+    </div>
+    <div class="sura-ar">مريم</div>
+</div>
+<div class="sura-row" onclick="goToSura(20)">
+    <div class="sura-num">20</div>
+    <div class="sura-info">
+        <span class="sura-name">Та-Ха</span>
+        <span class="sura-ru">Та-Ха</span>
+    </div>
+    <div class="sura-ar">طه</div>
+</div>
+<div class="sura-row" onclick="goToSura(21)">
+    <div class="sura-num">21</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Анбия</span>
+        <span class="sura-ru">Пророки</span>
+    </div>
+    <div class="sura-ar">الأنبياء</div>
+</div>
+<div class="sura-row" onclick="goToSura(22)">
+    <div class="sura-num">22</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Хадж</span>
+        <span class="sura-ru">Паломничество</span>
+    </div>
+    <div class="sura-ar">الحج</div>
+</div>
+<div class="sura-row" onclick="goToSura(23)">
+    <div class="sura-num">23</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Муминун</span>
+        <span class="sura-ru">Верующие</span>
+    </div>
+    <div class="sura-ar">المؤمنون</div>
+</div>
+<div class="sura-row" onclick="goToSura(24)">
+    <div class="sura-num">24</div>
+    <div class="sura-info">
+        <span class="sura-name">Ан-Нур</span>
+        <span class="sura-ru">Свет</span>
+    </div>
+    <div class="sura-ar">النور</div>
+</div>
+<div class="sura-row" onclick="goToSura(25)">
+    <div class="sura-num">25</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Фуркан</span>
+        <span class="sura-ru">Различение</span>
+    </div>
+    <div class="sura-ar">الفرقان</div>
+</div>
+<div class="sura-row" onclick="goToSura(26)">
+    <div class="sura-num">26</div>
+    <div class="sura-info">
+        <span class="sura-name">Аш-Шуара</span>
+        <span class="sura-ru">Поэты</span>
+    </div>
+    <div class="sura-ar">الشعراء</div>
+</div>
+<div class="sura-row" onclick="goToSura(27)">
+    <div class="sura-num">27</div>
+    <div class="sura-info">
+        <span class="sura-name">Ан-Намль</span>
+        <span class="sura-ru">Муравьи</span>
+    </div>
+    <div class="sura-ar">النمل</div>
+</div>
+<div class="sura-row" onclick="goToSura(28)">
+    <div class="sura-num">28</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Касас</span>
+        <span class="sura-ru">Рассказ</span>
+    </div>
+    <div class="sura-ar">القصص</div>
+</div>
+<div class="sura-row" onclick="goToSura(29)">
+    <div class="sura-num">29</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Анкабут</span>
+        <span class="sura-ru">Паук</span>
+    </div>
+    <div class="sura-ar">العنكبوت</div>
+</div>
+<div class="sura-row" onclick="goToSura(30)">
+    <div class="sura-num">30</div>
+    <div class="sura-info">
+        <span class="sura-name">Ар-Рум</span>
+        <span class="sura-ru">Римляне</span>
+    </div>
+    <div class="sura-ar">الروم</div>
+</div>
+<div class="sura-row" onclick="goToSura(31)">
+    <div class="sura-num">31</div>
+    <div class="sura-info">
+        <span class="sura-name">Лукман</span>
+        <span class="sura-ru">Лукман</span>
+    </div>
+    <div class="sura-ar">لقمان</div>
+</div>
+<div class="sura-row" onclick="goToSura(32)">
+    <div class="sura-num">32</div>
+    <div class="sura-info">
+        <span class="sura-name">Ас-Саджда</span>
+        <span class="sura-ru">Поклон</span>
+    </div>
+    <div class="sura-ar">السجدة</div>
+</div>
+<div class="sura-row" onclick="goToSura(33)">
+    <div class="sura-num">33</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Ахзаб</span>
+        <span class="sura-ru">Союзники</span>
+    </div>
+    <div class="sura-ar">الأحزاب</div>
+</div>
+<div class="sura-row" onclick="goToSura(34)">
+    <div class="sura-num">34</div>
+    <div class="sura-info">
+        <span class="sura-name">Саба</span>
+        <span class="sura-ru">Саба</span>
+    </div>
+    <div class="sura-ar">سبإ</div>
+</div>
+<div class="sura-row" onclick="goToSura(35)">
+    <div class="sura-num">35</div>
+    <div class="sura-info">
+        <span class="sura-name">Фатыр</span>
+        <span class="sura-ru">Творец</span>
+    </div>
+    <div class="sura-ar">فاطر</div>
+</div>
+<div class="sura-row" onclick="goToSura(36)">
+    <div class="sura-num">36</div>
+    <div class="sura-info">
+        <span class="sura-name">Ясин</span>
+        <span class="sura-ru">Ясин</span>
+    </div>
+    <div class="sura-ar">يس</div>
+</div>
+<div class="sura-row" onclick="goToSura(37)">
+    <div class="sura-num">37</div>
+    <div class="sura-info">
+        <span class="sura-name">Ас-Саффат</span>
+        <span class="sura-ru">Выстраивающиеся в ряды</span>
+    </div>
+    <div class="sura-ar">الصافات</div>
+</div>
+<div class="sura-row" onclick="goToSura(38)">
+    <div class="sura-num">38</div>
+    <div class="sura-info">
+        <span class="sura-name">Сад</span>
+        <span class="sura-ru">Сад</span>
+    </div>
+    <div class="sura-ar">ص</div>
+</div>
+<div class="sura-row" onclick="goToSura(39)">
+    <div class="sura-num">39</div>
+    <div class="sura-info">
+        <span class="sura-name">Аз-Зумар</span>
+        <span class="sura-ru">Толпы</span>
+    </div>
+    <div class="sura-ar">الزمر</div>
+</div>
+<div class="sura-row" onclick="goToSura(40)">
+    <div class="sura-num">40</div>
+    <div class="sura-info">
+        <span class="sura-name">Гафир</span>
+        <span class="sura-ru">Прощающий</span>
+    </div>
+    <div class="sura-ar">غافر</div>
+</div>
+<div class="sura-row" onclick="goToSura(41)">
+    <div class="sura-num">41</div>
+    <div class="sura-info">
+        <span class="sura-name">Фуссилат</span>
+        <span class="sura-ru">Разъяснены</span>
+    </div>
+    <div class="sura-ar">فصلت</div>
+</div>
+<div class="sura-row" onclick="goToSura(42)">
+    <div class="sura-num">42</div>
+    <div class="sura-info">
+        <span class="sura-name">Аш-Шура</span>
+        <span class="sura-ru">Совет</span>
+    </div>
+    <div class="sura-ar">الشورى</div>
+</div>
+<div class="sura-row" onclick="goToSura(43)">
+    <div class="sura-num">43</div>
+    <div class="sura-info">
+        <span class="sura-name">Аз-Зухруф</span>
+        <span class="sura-ru">Украшения</span>
+    </div>
+    <div class="sura-ar">الزخرف</div>
+</div>
+<div class="sura-row" onclick="goToSura(44)">
+    <div class="sura-num">44</div>
+    <div class="sura-info">
+        <span class="sura-name">Ад-Духан</span>
+        <span class="sura-ru">Дым</span>
+    </div>
+    <div class="sura-ar">الدخان</div>
+</div>
+<div class="sura-row" onclick="goToSura(45)">
+    <div class="sura-num">45</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Джасия</span>
+        <span class="sura-ru">Коленопреклонённые</span>
+    </div>
+    <div class="sura-ar">الجاثية</div>
+</div>
+<div class="sura-row" onclick="goToSura(46)">
+    <div class="sura-num">46</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Ахкаф</span>
+        <span class="sura-ru">Песчаные холмы</span>
+    </div>
+    <div class="sura-ar">الأحقاف</div>
+</div>
+<div class="sura-row" onclick="goToSura(47)">
+    <div class="sura-num">47</div>
+    <div class="sura-info">
+        <span class="sura-name">Мухаммад</span>
+        <span class="sura-ru">Мухаммад</span>
+    </div>
+    <div class="sura-ar">محمد</div>
+</div>
+<div class="sura-row" onclick="goToSura(48)">
+    <div class="sura-num">48</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Фатх</span>
+        <span class="sura-ru">Победа</span>
+    </div>
+    <div class="sura-ar">الفتح</div>
+</div>
+<div class="sura-row" onclick="goToSura(49)">
+    <div class="sura-num">49</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Худжурат</span>
+        <span class="sura-ru">Комнаты</span>
+    </div>
+    <div class="sura-ar">الحجرات</div>
+</div>
+<div class="sura-row" onclick="goToSura(50)">
+    <div class="sura-num">50</div>
+    <div class="sura-info">
+        <span class="sura-name">Каф</span>
+        <span class="sura-ru">Каф</span>
+    </div>
+    <div class="sura-ar">ق</div>
+</div>
+<div class="sura-row" onclick="goToSura(51)">
+    <div class="sura-num">51</div>
+    <div class="sura-info">
+        <span class="sura-name">Аз-Зарият</span>
+        <span class="sura-ru">Рассеивающие</span>
+    </div>
+    <div class="sura-ar">الذاريات</div>
+</div>
+<div class="sura-row" onclick="goToSura(52)">
+    <div class="sura-num">52</div>
+    <div class="sura-info">
+        <span class="sura-name">Ат-Тур</span>
+        <span class="sura-ru">Гора</span>
+    </div>
+    <div class="sura-ar">الطور</div>
+</div>
+<div class="sura-row" onclick="goToSura(53)">
+    <div class="sura-num">53</div>
+    <div class="sura-info">
+        <span class="sura-name">Ан-Наджм</span>
+        <span class="sura-ru">Звезда</span>
+    </div>
+    <div class="sura-ar">النجم</div>
+</div>
+<div class="sura-row" onclick="goToSura(54)">
+    <div class="sura-num">54</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Камар</span>
+        <span class="sura-ru">Луна</span>
+    </div>
+    <div class="sura-ar">القمر</div>
+</div>
+<div class="sura-row" onclick="goToSura(55)">
+    <div class="sura-num">55</div>
+    <div class="sura-info">
+        <span class="sura-name">Ар-Рахман</span>
+        <span class="sura-ru">Милостивый</span>
+    </div>
+    <div class="sura-ar">الرحمن</div>
+</div>
+<div class="sura-row" onclick="goToSura(56)">
+    <div class="sura-num">56</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Вакиа</span>
+        <span class="sura-ru">Событие</span>
+    </div>
+    <div class="sura-ar">الواقعة</div>
+</div>
+<div class="sura-row" onclick="goToSura(57)">
+    <div class="sura-num">57</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Хадид</span>
+        <span class="sura-ru">Железо</span>
+    </div>
+    <div class="sura-ar">الحديد</div>
+</div>
+<div class="sura-row" onclick="goToSura(58)">
+    <div class="sura-num">58</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Муджадила</span>
+        <span class="sura-ru">Препирающаяся женщина</span>
+    </div>
+    <div class="sura-ar">المجادلة</div>
+</div>
+<div class="sura-row" onclick="goToSura(59)">
+    <div class="sura-num">59</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Хашр</span>
+        <span class="sura-ru">Собрание</span>
+    </div>
+    <div class="sura-ar">الحشر</div>
+</div>
+<div class="sura-row" onclick="goToSura(60)">
+    <div class="sura-num">60</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Мумтахана</span>
+        <span class="sura-ru">Испытуемая</span>
+    </div>
+    <div class="sura-ar">الممتحنة</div>
+</div>
+<div class="sura-row" onclick="goToSura(61)">
+    <div class="sura-num">61</div>
+    <div class="sura-info">
+        <span class="sura-name">Ас-Саф</span>
+        <span class="sura-ru">Ряды</span>
+    </div>
+    <div class="sura-ar">الصف</div>
+</div>
+<div class="sura-row" onclick="goToSura(62)">
+    <div class="sura-num">62</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Джуму‘а</span>
+        <span class="sura-ru">Пятничная молитва</span>
+    </div>
+    <div class="sura-ar">الجمعة</div>
+</div>
+<div class="sura-row" onclick="goToSura(63)">
+    <div class="sura-num">63</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Мунафикун</span>
+        <span class="sura-ru">Лицемеры</span>
+    </div>
+    <div class="sura-ar">المنافقون</div>
+</div>
+<div class="sura-row" onclick="goToSura(64)">
+    <div class="sura-num">64</div>
+    <div class="sura-info">
+        <span class="sura-name">Ат-Тагабун</span>
+        <span class="sura-ru">Взаимное обманывание</span>
+    </div>
+    <div class="sura-ar">التغابن</div>
+</div>
+<div class="sura-row" onclick="goToSura(65)">
+    <div class="sura-num">65</div>
+    <div class="sura-info">
+        <span class="sura-name">Ат-Талак</span>
+        <span class="sura-ru">Развод</span>
+    </div>
+    <div class="sura-ar">الطلاق</div>
+</div>
+<div class="sura-row" onclick="goToSura(66)">
+    <div class="sura-num">66</div>
+    <div class="sura-info">
+        <span class="sura-name">Ат-Тахрим</span>
+        <span class="sura-ru">Запрещение</span>
+    </div>
+    <div class="sura-ar">التحريم</div>
+</div>
+<div class="sura-row" onclick="goToSura(67)">
+    <div class="sura-num">67</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Мульк</span>
+        <span class="sura-ru">Власть</span>
+    </div>
+    <div class="sura-ar">الملك</div>
+</div>
+<div class="sura-row" onclick="goToSura(68)">
+    <div class="sura-num">68</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Калям</span>
+        <span class="sura-ru">Письменная трость</span>
+    </div>
+    <div class="sura-ar">القلم</div>
+</div>
+<div class="sura-row" onclick="goToSura(69)">
+    <div class="sura-num">69</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Хакка</span>
+        <span class="sura-ru">Неизбежное событие</span>
+    </div>
+    <div class="sura-ar">الحاقة</div>
+</div>
+<div class="sura-row" onclick="goToSura(70)">
+    <div class="sura-num">70</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Ма‘ариж</span>
+        <span class="sura-ru">Ступени</span>
+    </div>
+    <div class="sura-ar">المعارج</div>
+</div>
+<div class="sura-row" onclick="goToSura(71)">
+    <div class="sura-num">71</div>
+    <div class="sura-info">
+        <span class="sura-name">Нух</span>
+        <span class="sura-ru">Нух</span>
+    </div>
+    <div class="sura-ar">نوح</div>
+</div>
+<div class="sura-row" onclick="goToSura(72)">
+    <div class="sura-num">72</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Джинн</span>
+        <span class="sura-ru">Джинны</span>
+    </div>
+    <div class="sura-ar">الجن</div>
+</div>
+<div class="sura-row" onclick="goToSura(73)">
+    <div class="sura-num">73</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Муззаммиль</span>
+        <span class="sura-ru">Закутавшийся</span>
+    </div>
+    <div class="sura-ar">المزمل</div>
+</div>
+<div class="sura-row" onclick="goToSura(74)">
+    <div class="sura-num">74</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Муддассир</span>
+        <span class="sura-ru">Завернувшийся</span>
+    </div>
+    <div class="sura-ar">المدثر</div>
+</div>
+<div class="sura-row" onclick="goToSura(75)">
+    <div class="sura-num">75</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Кыяма</span>
+        <span class="sura-ru">Воскресение</span>
+    </div>
+    <div class="sura-ar">القيامة</div>
+</div>
+<div class="sura-row" onclick="goToSura(76)">
+    <div class="sura-num">76</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Инсан</span>
+        <span class="sura-ru">Человек</span>
+    </div>
+    <div class="sura-ar">الإنسان</div>
+</div>
+<div class="sura-row" onclick="goToSura(77)">
+    <div class="sura-num">77</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Мурсалят</span>
+        <span class="sura-ru">Посылаемые</span>
+    </div>
+    <div class="sura-ar">المرسلات</div>
+</div>
+<div class="sura-row" onclick="goToSura(78)">
+    <div class="sura-num">78</div>
+    <div class="sura-info">
+        <span class="sura-name">Ан-Наба</span>
+        <span class="sura-ru">Весть</span>
+    </div>
+    <div class="sura-ar">النبإ</div>
+</div>
+<div class="sura-row" onclick="goToSura(79)">
+    <div class="sura-num">79</div>
+    <div class="sura-info">
+        <span class="sura-name">Ан-Нази‘ат</span>
+        <span class="sura-ru">Исторгающие</span>
+    </div>
+    <div class="sura-ar">النازعات</div>
+</div>
+<div class="sura-row" onclick="goToSura(80)">
+    <div class="sura-num">80</div>
+    <div class="sura-info">
+        <span class="sura-name">Абаса</span>
+        <span class="sura-ru">Нахмурился</span>
+    </div>
+    <div class="sura-ar">عبس</div>
+</div>
+<div class="sura-row" onclick="goToSura(81)">
+    <div class="sura-num">81</div>
+    <div class="sura-info">
+        <span class="sura-name">Ат-Таквир</span>
+        <span class="sura-ru">Скручивание</span>
+    </div>
+    <div class="sura-ar">التكوير</div>
+</div>
+<div class="sura-row" onclick="goToSura(82)">
+    <div class="sura-num">82</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Инфитар</span>
+        <span class="sura-ru">Раскалывание</span>
+    </div>
+    <div class="sura-ar">الإنفطار</div>
+</div>
+<div class="sura-row" onclick="goToSura(83)">
+    <div class="sura-num">83</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Мутаффифин</span>
+        <span class="sura-ru">Обвешивающие</span>
+    </div>
+    <div class="sura-ar">المطففين</div>
+</div>
+<div class="sura-row" onclick="goToSura(84)">
+    <div class="sura-num">84</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Иншикак</span>
+        <span class="sura-ru">Раскалывание</span>
+    </div>
+    <div class="sura-ar">الانشقاق</div>
+</div>
+<div class="sura-row" onclick="goToSura(85)">
+    <div class="sura-num">85</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Бурудж</span>
+        <span class="sura-ru">Созвездия</span>
+    </div>
+    <div class="sura-ar">البروج</div>
+</div>
+<div class="sura-row" onclick="goToSura(86)">
+    <div class="sura-num">86</div>
+    <div class="sura-info">
+        <span class="sura-name">Ат-Тарик</span>
+        <span class="sura-ru">Ночная звезда</span>
+    </div>
+    <div class="sura-ar">الطارق</div>
+</div>
+<div class="sura-row" onclick="goToSura(87)">
+    <div class="sura-num">87</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-А‘ля</span>
+        <span class="sura-ru">Всевышний</span>
+    </div>
+    <div class="sura-ar">الأعلى</div>
+</div>
+<div class="sura-row" onclick="goToSura(88)">
+    <div class="sura-num">88</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Гашия</span>
+        <span class="sura-ru">Покрывающее</span>
+    </div>
+    <div class="sura-ar">الغاشية</div>
+</div>
+<div class="sura-row" onclick="goToSura(89)">
+    <div class="sura-num">89</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Фаджр</span>
+        <span class="sura-ru">Рассвет</span>
+    </div>
+    <div class="sura-ar">الفجر</div>
+</div>
+<div class="sura-row" onclick="goToSura(90)">
+    <div class="sura-num">90</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Балад</span>
+        <span class="sura-ru">Город</span>
+    </div>
+    <div class="sura-ar">البلد</div>
+</div>
+<div class="sura-row" onclick="goToSura(91)">
+    <div class="sura-num">91</div>
+    <div class="sura-info">
+        <span class="sura-name">Аш-Шамс</span>
+        <span class="sura-ru">Солнце</span>
+    </div>
+    <div class="sura-ar">الشمس</div>
+</div>
+<div class="sura-row" onclick="goToSura(92)">
+    <div class="sura-num">92</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Лайл</span>
+        <span class="sura-ru">Ночь</span>
+    </div>
+    <div class="sura-ar">الليل</div>
+</div>
+<div class="sura-row" onclick="goToSura(93)">
+    <div class="sura-num">93</div>
+    <div class="sura-info">
+        <span class="sura-name">Ад-Духа</span>
+        <span class="sura-ru">Утро</span>
+    </div>
+    <div class="sura-ar">الضحى</div>
+</div>
+<div class="sura-row" onclick="goToSura(94)">
+    <div class="sura-num">94</div>
+    <div class="sura-info">
+        <span class="sura-name">Аш-Шарх</span>
+        <span class="sura-ru">Раскрытие</span>
+    </div>
+    <div class="sura-ar">الشرح</div>
+</div>
+<div class="sura-row" onclick="goToSura(95)">
+    <div class="sura-num">95</div>
+    <div class="sura-info">
+        <span class="sura-name">Ат-Тин</span>
+        <span class="sura-ru">Смоква</span>
+    </div>
+    <div class="sura-ar">التين</div>
+</div>
+<div class="sura-row" onclick="goToSura(96)">
+    <div class="sura-num">96</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Аляк</span>
+        <span class="sura-ru">Сгусток</span>
+    </div>
+    <div class="sura-ar">العلق</div>
+</div>
+<div class="sura-row" onclick="goToSura(97)">
+    <div class="sura-num">97</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Къадр</span>
+        <span class="sura-ru">Могущество</span>
+    </div>
+    <div class="sura-ar">القدر</div>
+</div>
+<div class="sura-row" onclick="goToSura(98)">
+    <div class="sura-num">98</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Баййина</span>
+        <span class="sura-ru">Ясное знамение</span>
+    </div>
+    <div class="sura-ar">البينة</div>
+</div>
+<div class="sura-row" onclick="goToSura(99)">
+    <div class="sura-num">99</div>
+    <div class="sura-info">
+        <span class="sura-name">Аз-Залзаля</span>
+        <span class="sura-ru">Землетрясение</span>
+    </div>
+    <div class="sura-ar">الزلزلة</div>
+</div>
+<div class="sura-row" onclick="goToSura(100)">
+    <div class="sura-num">100</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Адият</span>
+        <span class="sura-ru">Скачущие</span>
+    </div>
+    <div class="sura-ar">العاديات</div>
+</div>
+<div class="sura-row" onclick="goToSura(101)">
+    <div class="sura-num">101</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Кариа</span>
+        <span class="sura-ru">Бедствие</span>
+    </div>
+    <div class="sura-ar">القارعة</div>
+</div>
+<div class="sura-row" onclick="goToSura(102)">
+    <div class="sura-num">102</div>
+    <div class="sura-info">
+        <span class="sura-name">Ат-Такасур</span>
+        <span class="sura-ru">Страсти к умножению</span>
+    </div>
+    <div class="sura-ar">التكاثر</div>
+</div>
+<div class="sura-row" onclick="goToSura(103)">
+    <div class="sura-num">103</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Аср</span>
+        <span class="sura-ru">Век</span>
+    </div>
+    <div class="sura-ar">العصر</div>
+</div>
+<div class="sura-row" onclick="goToSura(104)">
+    <div class="sura-num">104</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Хумаза</span>
+        <span class="sura-ru">Злоязычные</span>
+    </div>
+    <div class="sura-ar">الهمزة</div>
+</div>
+<div class="sura-row" onclick="goToSura(105)">
+    <div class="sura-num">105</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Филь</span>
+        <span class="sura-ru">Слон</span>
+    </div>
+    <div class="sura-ar">الفيل</div>
+</div>
+<div class="sura-row" onclick="goToSura(106)">
+    <div class="sura-num">106</div>
+    <div class="sura-info">
+        <span class="sura-name">Курайш</span>
+        <span class="sura-ru">Курайшиты</span>
+    </div>
+    <div class="sura-ar">قريش</div>
+</div>
+<div class="sura-row" onclick="goToSura(107)">
+    <div class="sura-num">107</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Маун</span>
+        <span class="sura-ru">Помощь</span>
+    </div>
+    <div class="sura-ar">الماعون</div>
+</div>
+<div class="sura-row" onclick="goToSura(108)">
+    <div class="sura-num">108</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Каусар</span>
+        <span class="sura-ru">Изобилие</span>
+    </div>
+    <div class="sura-ar">الكوثر</div>
+</div>
+<div class="sura-row" onclick="goToSura(109)">
+    <div class="sura-num">109</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Кафирун</span>
+        <span class="sura-ru">Неверные</span>
+    </div>
+    <div class="sura-ar">الكافرون</div>
+</div>
+<div class="sura-row" onclick="goToSura(110)">
+    <div class="sura-num">110</div>
+    <div class="sura-info">
+        <span class="sura-name">Ан-Наср</span>
+        <span class="sura-ru">Помощь</span>
+    </div>
+    <div class="sura-ar">النصر</div>
+</div>
+<div class="sura-row" onclick="goToSura(111)">
+    <div class="sura-num">111</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Масад</span>
+        <span class="sura-ru">Пальмовые волокна</span>
+    </div>
+    <div class="sura-ar">المسد</div>
+</div>
+<div class="sura-row" onclick="goToSura(112)">
+    <div class="sura-num">112</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Ихлас</span>
+        <span class="sura-ru">Очищение веры</span>
+    </div>
+    <div class="sura-ar">الإخلاص</div>
+</div>
+<div class="sura-row" onclick="goToSura(113)">
+    <div class="sura-num">113</div>
+    <div class="sura-info">
+        <span class="sura-name">Аль-Фаляк</span>
+        <span class="sura-ru">Рассвет</span>
+    </div>
+    <div class="sura-ar">الفلق</div>
+</div>
+<div class="sura-row" onclick="goToSura(114)">
+    <div class="sura-num">114</div>
+    <div class="sura-info">
+        <span class="sura-name">Ан-Нас</span>
+        <span class="sura-ru">Люди</span>
+    </div>
+    <div class="sura-ar">الناس</div>
+</div>
+    </div>
+<script>
+function goBack() {
+  if (window.history.length > 1) {
+    window.history.back();
+  } else {
+    window.location.href = '/'; // или любая ваша "домашняя" страница
+  }
+}
+</script>
+    <script>
+        function goToSura(num) {
+            // Открывает quran.com с нужной сурой прямо в этой вкладке
+        window.location.href = `https://tanzil.net/#${num}`;
+        }
+    </script>
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./service-worker.js')
+    .then(function(reg) {
+      console.log('Service Worker зарегистрирован', reg);
+    })
+    .catch(function(err) {
+      console.log('Service Worker ошибка:', err);
+    });
+}
+</script>
+</body>
+</html>
