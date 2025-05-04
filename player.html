@@ -287,7 +287,13 @@ bar.addEventListener("click", (e)=>{
 </script>
 <script>
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./service-worker.js');
+  navigator.serviceWorker.register('./service-worker.js')
+    .then(function(reg) {
+      console.log('Service Worker зарегистрирован', reg);
+    })
+    .catch(function(err) {
+      console.log('Service Worker ошибка:', err);
+    });
 }
 </script>
 </body>
