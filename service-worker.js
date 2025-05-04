@@ -3,8 +3,6 @@ self.addEventListener('install', event => {
     caches.open('pwa-v1').then(cache => {
       return cache.addAll([
         './',
-        './index.html',
-'./player.html',
         // Добавь сюда важные ресурсы, например, CSS, логотипы и т.д.
       ]);
     })
