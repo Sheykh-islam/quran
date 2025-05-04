@@ -3,8 +3,6 @@ const CACHE_FILES = [
   './',
   './index.html',
   './manifest.json',
-  './style.css',         // если есть
-  './main.js',           // если есть
   'https://sheykh-islam.github.io/quran/play.png',
   'https://sheykh-islam.github.io/quran/pause.png',
   'https://sheykh-islam.github.io/quran/next.png',
