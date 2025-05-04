@@ -40,11 +40,39 @@ onclick="window.location.href='https://sheykh-islam.github.io/quran/player.html'
 <script>
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('./service-worker.js')
-    .then(function(reg) {
-      console.log('Service Worker зарегистрирован', reg);
-    })
-    .catch(function(err) {
-      console.log('Service Worker ошибка:', err);
+    .then(reg => {
+      // Вешаем слушатель на обновление Service Worker
+      reg.onupdatefound = function() {
+        const newWorker = reg.installing;
+        newWorker.onstatechange = function() {
+          if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+            // Показать уведомление пользователю
+            showUpdateBanner();
+          }
+        };
+      };
     });
+}
+
+// Показываем баннер "Доступно обновление!"
+function showUpdateBanner() {
+  // Можно оформить по-красивому!
+  let banner = document.createElement('div');
+  banner.style.cssText = `
+    position:fixed;bottom:25px;left:50%;transform:translateX(-50%);
+    background:#166c43;color:#fff;padding:12px 30px;border-radius:20px;
+    box-shadow:0 0 22px #0004;z-index:9999; font-size:1em;display:flex;gap:18px;align-items:center;`;
+  banner.innerHTML = `Доступна новая версия! <button style="background:#fff;color:#166c43;border:none;border-radius:15px;padding:6px 15px;font-weight:bold;cursor:pointer;">Обновить</button>`;
+  document.body.appendChild(banner);
+  banner.querySelector('button').onclick = () => {
+    navigator.serviceWorker.getRegistration().then(function(reg) {
+      if (reg.waiting) {
+        reg.waiting.postMessage('SKIP_WAITING');
+        window.location.reload();
+      } else {
+        window.location.reload();
+      }
+    });
+  };
 }
 </script> </body> </html>
