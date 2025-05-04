@@ -49,6 +49,23 @@
       font-weight:600; color:#58157f;
       text-align:center; margin-top:10px;
     }
+.back-btn {
+  display: inline-block;
+  margin-bottom: 20px;
+  margin-top: 8px;
+  color: #6B237B;
+  font-weight: 600;
+  cursor: pointer;
+  background: #f3f1fa;
+  border-radius: 11px;
+  padding: 7px 17px 7px 13px;
+  box-shadow: 0 2px 5px #0001;
+  font-size: 1.07em;
+  transition: background .12s;
+}
+.back-btn:hover {
+  background: #eadfed;
+}
     .player .info{
       font-size:16px; color:#555; margin-bottom:25px;
       text-align:center;
@@ -104,6 +121,9 @@
 </head>
 <body>
 <div class="container">
+<div class="back-btn" onclick="goBack()">
+  &larr; Назад
+</div>
   <h3>Современный плеер Корана</h3>
   <div class="inputs">
     <select id="reciter"></select>
@@ -287,6 +307,14 @@ bar.addEventListener("click", (e)=>{
     audio.currentTime = percent*audio.duration;
   }
 });
+function goBack() {
+  if (window.history.length > 1) {
+    window.history.back();
+  } else {
+    // Если нет истории перехода, вернуть домой/куда хотите:
+    window.location.href = '/'; // Можно поменять на вашу домашнюю страницу
+  }
+}
 </script>
 <script>
 if ('serviceWorker' in navigator) {
