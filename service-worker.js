@@ -7,6 +7,9 @@ const CACHE_FILES = [
   'https://sheykh-islam.github.io/quran/pause.png',
   'https://sheykh-islam.github.io/quran/next.png',
   'https://sheykh-islam.github.io/quran/back.png'
+'https://static.tildacdn.info/tild3739-3062-4332-a434-343338306139/-/resizeb/20x/koran2_3.jpg' ,
+'https://static.tildacdn.info/tild6531-3639-4237-a261-663039646164/-/resizeb/20x/230.jpg' ,
+'https://static.tildacdn.info/tild3535-3538-4565-a430-663239306538/-/resizeb/20x/photo_2025-05-03_16-.jpg' , 
 ];
 
 // Кэширование файлов
