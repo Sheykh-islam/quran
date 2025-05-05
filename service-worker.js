@@ -1,4 +1,4 @@
-const CACHE_NAME = "pwa-v2";  // меняй версию при каждом обновлении!
+const CACHE_NAME = "pwa-v3";  // меняй версию при каждом обновлении!
 const CACHE_FILES = [
   './',
   './index.html',
