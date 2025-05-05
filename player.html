@@ -167,21 +167,6 @@ const suras = [
 "Аль-Аъля","Аль-Гашия","Аль-Фаджр","Аль-Балад","Аш-Шамс","Аль-Лейль","Ад-Духа","Аль-Инширах","Ат-Тин","Аль-Алак",
 "Аль-Кадр","Аль-Баййина","Аз-Залзаля","Аль-Адият","Аль-Кариа","Ат-Такатур","Аль-Аср","Аль-Хумаза","Аль-Филь","Курайш",
 "Аль-Маун","Аль-Каусар","Аль-Кафирун","Ан-Наср","Аль-Массад","Аль-Ихляс","Аль-Фаляк","Ан-Нас"];
-const suraNamesEn = [
-  "al_fatihah", "al_baqarah", "ali_imran", "an_nisa", "al_ma_idah", "al_an_am", "al_a_raaf", "al_anfal", "at_tawbah",
-  "yunus", "hud", "yusuf", "ar_ra_ad", "ibrahim", "al_hijr", "an_nahl", "al_isra", "al_kahf", "maryam", "ta_ha",
-  "al_anbiya", "al_hajj", "al_muminun", "an_nur", "al_furqan", "ash_shuara", "an_naml", "al_qasas", "al_ankabut",
-  "ar_rum", "luqman", "as_sajdah", "al_ahzab", "saba", "fatir", "ya_sin", "as_saffat", "sad", "az_zumar", "ghafir",
-  "fussilat", "ash_shura", "az_zukhruf", "ad_dukhan", "al_jathiyah", "al_ahqaf", "muhammad", "al_fath", "al_hujurat",
-  "qaf", "adh_dhariyat", "at_tur", "an_najm", "al_qamar", "ar_rahman", "al_waqi_a", "al_hadid", "al_mujadilah",
-  "al_hashr", "al_mumtahanah", "as_saff", "al_jumuah", "al_munafiqun", "at_taghabun", "at_talaq", "at_tahrim",
-  "al_mulk", "al_qalam", "al_haqqah", "al_maarij", "nuh", "al_jinn", "al_muzzammil", "al_muddaththir", "al_qiyamah",
-  "al_insan", "al_mursalat", "an_naba", "an_nazi_at", "abasa", "at_takwir", "al_infitar", "al_mutaffifin",
-  "al_inshiqaq", "al_buruj", "at_tariq", "al_a_la", "al_ghashiyah", "al_fajr", "al_balad", "ash_shams", "al_layl",
-  "ad_duha", "ash_sharh", "at_tin", "al_alaq", "al_qadr", "al_bayyinah", "az_zalzalah", "al_adiyat", "al_qari_ah",
-  "at_takathur", "al_asr", "al_humazah", "al_fil", "quraysh", "al_ma_un", "al_kawthar", "al_kafirun", "an_nasr",
-  "al_masad", "al_ikhlas", "al_falaq", "an_nas"
-];
 const reciters = [
   {name: "Абдул Басит Абдул Самад", template: s=> `https://server7.mp3quran.net/basit/Almusshaf-Al-Mojawwad/${s}.mp3` },
   {name: "Абдуллах аль-Матруд", template: s=>`https://media.quran-online.ru/recitations/abdullah-matrud/by-sura/${s}.mp3` },
@@ -198,16 +183,7 @@ const reciters = [
   {name: "Салах Бухатир", template: s=>`https://media.quran-online.ru/recitations/salah-bukhatir/by-sura/${s}.mp3` },
   {name: "Сауд аш-Шурейм", template: s=>`https://media.quran-online.ru/recitations/saood-bin-ibraaheem-ash-shuraym/by-sura/${s}.mp3` },
   {name: "Тауфик ибн Санд ас-Сауаих", template: s=>`https://media.quran-online.ru/recitations/tawfeeq-ibn-said-as-sawaigh/by-sura/${s}.mp3` },
-  {name: "Ясир ад даусари", template: s=>`https://media.quran-online.ru/recitations/yasser-ad-dussary/by-sura/${s}.mp3` },
-  // Новый перевод:
-  {
-    name: "Коран с переводом на русский",
-    template: s => {
-      const num = String(s).padStart(3, '0');
-      const name = suraNamesEn[s - 1];
-      return `https://s2.musulmanin.com/quran/quran_trans_ar_rus/${num}_surah_${name}_www.musulmanin.com.mp3`;
-    }
-  }
+  {name: "Ясир ад даусари", template: s=>`https://media.quran-online.ru/recitations/yasser-ad-dussary/by-sura/${s}.mp3` }
 ];
 
 const reciterSel = document.getElementById("reciter");
