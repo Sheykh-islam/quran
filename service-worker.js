@@ -1,7 +1,6 @@
 const CACHE_NAME = "pwa-v3";  // меняй версию при каждом обновлении!
 const CACHE_FILES = [
   './',
-  './index.html',
   './manifest.json',
   'https://sheykh-islam.github.io/quran/play.png',
   'https://sheykh-islam.github.io/quran/pause.png',
