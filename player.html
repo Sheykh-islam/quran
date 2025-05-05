@@ -242,6 +242,7 @@ reciterSel.onchange = e=>{
 suraSel.onchange = e=>{
   currentSura = +e.target.value;
   updatePlayer();
+  audio.play(); // автоматически начать воспроизведение выбранной суры
 };
 updatePlayer();
 
@@ -266,8 +267,9 @@ playBtn.addEventListener("click", ()=>{
 audio.addEventListener("play", setPauseIcon);
 audio.addEventListener("pause",setPlayIcon);
 audio.addEventListener("ended",()=> {
-  audio.currentTime = 0;
-  setPlayIcon();
+  currentSura = (currentSura < TOTAL_SURAS) ? (currentSura + 1) : 1;
+  updatePlayer();
+  audio.play(); // автоматически следующая сура!
 });
 
 // Кнопки вперед/назад
