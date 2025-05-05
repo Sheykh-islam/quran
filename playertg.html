@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="theme-color" content="rgb(98, 42, 115)">
+  <meta charset="UTF-8">
+  <title>Quran player</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    :root{
+      --large: 65px;
+      --bar-height:10px;
+    }
+    body{
+      font-family:sans-serif;
+      min-height:100vh; margin:0;
+      background: rgb(149,1,193);
+      background: linear-gradient(159deg, rgb(98 42 115) 0%, rgba(227,129,102,1) 100%);
+      display:flex; flex-direction:column; align-items:center;
+    }
+    .container{
+      margin:40px auto 0 auto;
+      border-radius: 23px;
+      box-shadow:0 4px 22px #0001;
+      max-width:500px; min-width:290px;
+      width:95vw; display:flex;
+      flex-direction:column; align-items:center;
+      padding:16px 5px 28px 5px;
+      background:#fff;
+    }
+    h3 { margin:0 0 23px 0; font-weight:700; font-size:1.13em; color: #6B237B;}
+    .inputs { width:100%; display:flex; gap:10px; justify-content:center;}
+    .inputs select {
+      padding:8px 12px; border-radius:10px; border: 1px solid #e6e9f1;
+      background:#f3f7fa; min-width:110px; font-size:1em;
+    }
+    .player{
+      border-radius:20px; width:100%; max-width: 440px;
+      height:290px;
+      box-shadow:6px 6px 15px rgba(51,51,51,0.15);
+      overflow:hidden; background:#f9f7fa; margin-top:28px; position:relative;
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+    }
+    .player .title{
+      font-size:23px; margin-bottom:7px;
+      font-weight:600; color:#58157f;
+      text-align:center; margin-top:10px;
+    }
+.back-btn {
+  display: inline-block;
+  margin-bottom: 20px;
+  margin-top: 8px;
+  margin-left: 8px;    /* по левому краю контейнера */
+  margin-right: auto;
+  color: #6B237B;
+  font-weight: 600;
+  cursor: pointer;
+  background: #f3f1fa;
+  border-radius: 11px;
+  padding: 7px 17px 7px 13px;
+  box-shadow: 0 2px 5px #0001;
+  font-size: 1.07em;
+  transition: background .12s;
+}
+.back-btn:hover {
+  background: #eadfed;
+}
+    .player .info{
+      font-size:16px; color:#555; margin-bottom:25px;
+      text-align:center;
+    }
+    .timestamp {
+      position:relative; width:82%; margin: 0 auto 26px auto;
+    }
+    #bar{
+      width:100%; height: var(--bar-height); background: #bbb; border-radius:16px;
+      cursor:pointer;
+    }
+    #current-time{
+      position:absolute; left:0; bottom:0; width:0;height:var(--bar-height);
+      background: #883ae7; border-radius:16px;
+      pointer-events:none; transition:width 0.12s;
+    }
+    #current-time:after{
+      content:""; width:16px; height:16px; position:absolute;
+      right:-8px; bottom:-4px;
+      border-radius:50%; background:#883ae7;
+      box-shadow: 0 0 5px 2px #eee;
+    }
+    .buttons{
+      display:flex; align-items:center; justify-content:center; gap:15px;
+      margin-top:6px;
+    }
+    .button{
+      border: none; border-radius:50%;
+      text-align:center; background:#fff;
+      box-shadow:0px 4px 10px #eee1;
+      width: var(--large); height: var(--large);
+      cursor:pointer; transition:.15s;
+      display:flex; align-items:center; justify-content:center;
+      padding:0;
+    }
+    .button img {
+      width:36px; height:36px; user-select:none; pointer-events:none;
+      object-fit:contain; background:transparent;
+    }
+    .button:active  { background: #eedcff; }
+    .player .meta-time {
+      width:82%;
+      display:flex; flex-direction:row; justify-content:space-between;
+      color:#666; font-size:14px; margin:4px auto 0 auto;
+    }
+    @media (max-width:600px){
+      .container{ max-width:96vw;}
+      .player{min-width:unset;}
+      h3 { font-size:0.98em;}
+      .button img{width:28px !important; height:28px !important;}
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+<div class="back-btn" onclick="goBack()">
+  &larr; Назад
+</div>
+  <h3>Современный плеер Корана</h3>
+  <div class="inputs">
+    <select id="reciter"></select>
+    <select id="sura"></select>
+  </div>
+  <div class="player" id="qplayer">
+    <div class="title" id="ptitle"></div>
+    <div class="info" id="sura_name"></div>
+    <div class="timestamp">
+      <div id="bar"></div>
+      <div id="current-time"></div>
+    </div>
+    <div class="meta-time"><span id="ctime">0:00</span><span id="dur">0:00</span></div>
+    <div class="buttons">
+      <button class="button" id="prevSuraBtn" title="Предыдущая сура">
+        <img src="https://sheykh-islam.github.io/quran/back.png" alt="Назад" id="imgPrevSura">
+      </button>
+      <button class="button" id="play" title="Воспроизвести">
+        <img src="https://sheykh-islam.github.io/quran/play.png" alt="Play" id="imgPlayPause">
+      </button>
+      <button class="button" id="nextSuraBtn" title="Следующая сура">
+        <img src="https://sheykh-islam.github.io/quran/next.png" alt="Вперед" id="imgNextSura">
+      </button>
+    </div>
+  </div>
+</div>
+<audio id="audio"></audio>
+<script>
+//==== Списки =====
+const suras = [
+"Аль-Фатиха","Аль-Бакара","Аль-Имран","Ан-Ниса","Аль-Маида","Аль-Ан'ам","Аль-А'раф","Аль-Анфаль","Ат-Тауба","Юнус","Худ","Юсуф",
+"Ар-Ра’д","Ибрахим","Аль-Хиджр","Ан-Нахль","Аль-Исра","Аль-Кахф","Марьям","Та-Ха","Аль-Анбия","Аль-Хадж","Аль-Муминун","Ан-Нур",
+"Аль-Фуркан","Аш-Шуара","Ан-Намль","Аль-Касас","Аль-Анкабут","Ар-Рум","Лукман","Ас-Саджда","Аль-Ахзаб","Саба'","Фатыр","Йа Син",
+"Ас-Саффат","Сад","Аз-Зумар","Гафир","Фуссылят","Аш-Шура","Аз-Зухруф","Ад-Духан","Аль-Джасия","Аль-Ахкаф","Мухаммад",
+"Аль-Фатх","Аль-Худжурат","Каф","Аз-Зарият","Ат-Тур","Ан-Наджм","Аль-Камар","Ар-Рахман","Аль-Ваки’а","Аль-Хадид",
+"Аль-Муджадила","Аль-Хашр","Аль-Мумтахина","Ас-Сафф","Аль-Джумуа","Аль-Мунафикун","Ат-Тагабун","Ат-Талак","Ат-Тахрим",
+"Аль-Мульк","Аль-Калам","Аль-Хакка","Аль-Мааридж","Нух","Аль-Джинн","Аль-Муззаммиль","Аль-Муддассир","Аль-Кийама","Аль-Инсан",
+"Аль-Мурсилят","Ан-Наба","Ан-Назиат","Абаса","Ат-Таквир","Аль-Инфитар","Аль-Мутаффифин","Аль-Иншикак","Аль-Бурудж","Ат-Тарик",
+"Аль-Аъля","Аль-Гашия","Аль-Фаджр","Аль-Балад","Аш-Шамс","Аль-Лейль","Ад-Духа","Аль-Инширах","Ат-Тин","Аль-Алак",
+"Аль-Кадр","Аль-Баййина","Аз-Залзаля","Аль-Адият","Аль-Кариа","Ат-Такатур","Аль-Аср","Аль-Хумаза","Аль-Филь","Курайш",
+"Аль-Маун","Аль-Каусар","Аль-Кафирун","Ан-Наср","Аль-Массад","Аль-Ихляс","Аль-Фаляк","Ан-Нас"];
+const reciters = [
+  {name: "Абдул Басит Абдул Самад", template: s=> `https://server7.mp3quran.net/basit/Almusshaf-Al-Mojawwad/${s}.mp3` },
+  {name: "Абдуллах аль-Матруд", template: s=>`https://media.quran-online.ru/recitations/abdullah-matrud/by-sura/${s}.mp3` },
+  {name: "Абубакр аль-Шатри", template: s=>`https://media.quran-online.ru/recitations/abu-bakr-al-shatri/by-sura/${s}.mp3` },
+  {name: "Азиз Алили", template: s=>`https://media.quran-online.ru/recitations/aziz-alili/by-sura/${s}.mp3` },
+  {name: "Али аль-Хузейфи", template: s=>`https://media.quran-online.ru/recitations/ali-abdur-rahman-al-huthaify/by-sura/${s}.mp3` },
+  {name: "Махмуд Халиль аль-Хусари", template: s=>`https://media.quran-online.ru/recitations/mahmoud-khaleel-al-husary/reading-muallim/by-sura/${s}.mp3` },
+  {name: "Мишари Рашид", template: s=>`https://media.quran-online.ru/recitations/mishari-rashid/by-sura/${s}.mp3` },
+  {name: "Мухаммад аль-Люхайдан", template: s=>`https://media.quran-online.ru/recitations/muhammad-al-luhaidan/by-sura/${s}.mp3` },
+  {name: "Мухаммад Сиддик аль-Миншави", template: s=>`https://media.quran-online.ru/recitations/muhammad-siddiq-al-minshawi/mujawwad/by-sura/${s}.mp3` },
+  {name: "Нассир аль-Катами", template: s=>`https://media.quran-online.ru/recitations/nasser-al-qatami/by-sura/${s}.mp3` },
+  {name: "Саад аль-Гамиди", template: s=>`https://media.quran-online.ru/recitations/saad-al-ghamdi/by-sura/${s}.mp3` },
+  {name: "Салах аль-Хашими", template: s=>`https://media.quran-online.ru/recitations/salah-al-hashim/by-sura/${s}.mp3` },
+  {name: "Салах Бухатир", template: s=>`https://media.quran-online.ru/recitations/salah-bukhatir/by-sura/${s}.mp3` },
+  {name: "Сауд аш-Шурейм", template: s=>`https://media.quran-online.ru/recitations/saood-bin-ibraaheem-ash-shuraym/by-sura/${s}.mp3` },
+  {name: "Тауфик ибн Санд ас-Сауаих", template: s=>`https://media.quran-online.ru/recitations/tawfeeq-ibn-said-as-sawaigh/by-sura/${s}.mp3` },
+  {name: "Ясир ад даусари", template: s=>`https://media.quran-online.ru/recitations/yasser-ad-dussary/by-sura/${s}.mp3` }
+];
+
+const reciterSel = document.getElementById("reciter");
+const suraSel = document.getElementById("sura");
+const ptitle = document.getElementById("ptitle");
+const sname = document.getElementById("sura_name");
+const audio = document.getElementById("audio");
+
+const playBtn = document.getElementById("play");
+const prevSuraBtn = document.getElementById("prevSuraBtn");
+const nextSuraBtn = document.getElementById("nextSuraBtn");
+
+const imgPlayPause = document.getElementById("imgPlayPause");
+const imgPrevSura = document.getElementById("imgPrevSura");
+const imgNextSura = document.getElementById("imgNextSura");
+const bar = document.getElementById("bar");
+const currentTimeBar = document.getElementById("current-time");
+const ctime = document.getElementById("ctime");
+const dur = document.getElementById("dur");
+
+let currentReciter = +localStorage.getItem("reciter") || 9;
+let currentSura = 1;
+const TOTAL_SURAS = suras.length;
+
+reciters.forEach((r,i)=>{
+  let opt = document.createElement("option");
+  opt.textContent = r.name; opt.value = i;
+  reciterSel.appendChild(opt);
+});
+suras.forEach((s,i)=>{
+  let opt = document.createElement("option");
+  opt.textContent = (i+1)+". "+s; opt.value = i+1;
+  suraSel.appendChild(opt);
+});
+
+reciterSel.selectedIndex = currentReciter;
+suraSel.selectedIndex = currentSura-1;
+
+function pad(n){ return String(n).padStart(3,"0"); }
+
+function updatePlayer(loadAudio=true){
+  ptitle.textContent = reciters[currentReciter].name;
+  sname.textContent  = (currentSura)+". "+suras[currentSura-1];
+  audio.src = reciters[currentReciter].template(pad(currentSura));
+  if(loadAudio) { audio.pause(); audio.currentTime=0; setPlayIcon(); }
+  dur.textContent = "0:00";
+  ctime.textContent = "0:00";
+  currentTimeBar.style.width = "0";
+  suraSel.selectedIndex = currentSura-1;
+}
+reciterSel.onchange = e=>{
+  currentReciter = +e.target.value;
+  localStorage.setItem("reciter", currentReciter);
+  updatePlayer();
+};
+suraSel.onchange = e=>{
+  currentSura = +e.target.value;
+  updatePlayer();
+};
+updatePlayer();
+
+function setPlayIcon(){
+  imgPlayPause.src = "https://sheykh-islam.github.io/quran/play.png";
+  imgPlayPause.alt = "Play";
+}
+function setPauseIcon(){
+  imgPlayPause.src = "https://sheykh-islam.github.io/quran/pause.png";
+  imgPlayPause.alt = "Pause";
+}
+
+playBtn.addEventListener("click", ()=>{
+  if(audio.paused){
+    audio.play();
+    setPauseIcon();
+  } else {
+    audio.pause();
+    setPlayIcon();
+  }
+});
+audio.addEventListener("play", setPauseIcon);
+audio.addEventListener("pause",setPlayIcon);
+audio.addEventListener("ended",()=> {
+  audio.currentTime = 0;
+  setPlayIcon();
+});
+
+// Кнопки вперед/назад
+prevSuraBtn.addEventListener("click",()=>{
+  currentSura = (currentSura>1) ? (currentSura-1) : TOTAL_SURAS;
+  updatePlayer();
+  audio.play();
+});
+nextSuraBtn.addEventListener("click",()=>{
+  currentSura = (currentSura<TOTAL_SURAS) ? (currentSura+1) : 1;
+  updatePlayer();
+  audio.play();
+});
+
+// === Прогресс-бар, время
+function formatTime(t){
+  let s = Math.round(t);
+  return Math.floor(s/60)+":"+("0"+(s%60)).slice(-2);
+}
+audio.addEventListener("timeupdate",()=>{
+  if(audio.duration>0){
+    currentTimeBar.style.width = ((audio.currentTime/audio.duration)*100)+"%";
+    ctime.textContent = formatTime(audio.currentTime);
+    dur.textContent = formatTime(audio.duration);
+  }
+});
+audio.addEventListener("loadedmetadata",()=>{
+  ctime.textContent = "0:00";
+  dur.textContent = formatTime(audio.duration || 0);
+  currentTimeBar.style.width = "0";
+});
+
+// === Перемотка кликом по бару ===
+bar.addEventListener("click", (e)=>{
+  const rect = bar.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const percent = x/rect.width;
+  if(audio.duration){
+    audio.currentTime = percent*audio.duration;
+  }
+});
+function goBack() {
+  if (window.history.length > 1) {
+    window.history.back();
+  } else {
+    // Если нет истории перехода, вернуть домой/куда хотите:
+    window.location.href = 'https://sites.google.com/view/sdk-test/%D0%B3%D0%BB%D0%B0%D0%B2%D0%BD%D0%B0%D1%8F-%D1%81%D1%82%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D0%B0'; // Можно поменять на вашу домашнюю страницу
+  }
+}
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./service-worker.js')
+    .then(function(reg) {
+      console.log('Service Worker зарегистрирован', reg);
+    })
+    .catch(function(err) {
+      console.log('Service Worker ошибка:', err);
+    });
+}
+</script>
+</body>
+</html>
